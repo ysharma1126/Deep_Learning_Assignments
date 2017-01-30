@@ -14,7 +14,7 @@ def model_variable(shape, name):
         variable = tf.get_variable(name=name,
                                    dtype=tf.float32,
                                    shape=shape,
-                                   initializer=tf.random_normal_initializer(stddev=0.1)
+                                   initializer=tf.random_uniform_initializer(minval = 0, maxval = 1)
         )
         tf.add_to_collection('model_variables', variable)
         return variable
@@ -70,7 +70,7 @@ def data():
         yield x, y
 
 sess = tf.Session()
-model = Model(sess, data, nEpochs=100, learning_rate=1e-1, num_functions=6)
+model = Model(sess, data, nEpochs=100, learning_rate=1e-2, num_functions=5)
 model.train_init()
 model.train()
 
@@ -78,14 +78,14 @@ collection = sess.run(tf.get_collection('model_variables'))
 print(collection)
 
 w = collection[0]
-mu = collection[1]
+mu = collection[1]  
 sig = collection[2]
 b = collection[3]
 
 
 # generate manifold and plot
 
-x= np.linspace(-0.1, 1.1, 100)
+x= np.linspace(-0.1, 1.1, 1000)
 
 y = []
 for a in x:
